@@ -1,0 +1,6 @@
+{
+  "name": "Backend Developer Portfolio",
+  "description": "Portfolio of a Junior Backend Developer specializing in Python, FastAPI, Django, and ERPNext.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
