@@ -346,7 +346,7 @@ export function ReactionFront({
 
       // MOUNT WARMUP — without it the first second of the hero is a blank grid
       seed();
-      const warm = reduced ? WARMUP + REDUCED_EXTRA : WARMUP;
+      const warm = reduced ? WARMUP + REDUCED_EXTRA : cols < 60 ? 250 : WARMUP;
       for (let s = 0; s < warm; s++) step();
     };
 
@@ -382,7 +382,6 @@ export function ReactionFront({
 
     const onPointerMove = (e: PointerEvent) => {
       const rect = canvas.getBoundingClientRect();
-      if (e.pointerType === "touch") return;
       ptr.gx = (e.clientX - rect.left) / cellW;
       ptr.gy = (e.clientY - rect.top) / cellH;
       ptr.has = true;
@@ -423,6 +422,9 @@ export function ReactionFront({
     window.addEventListener("resize", onResize);
     if (!reduced) {
       interactionTarget.addEventListener("pointermove", onPointerMove);
+      interactionTarget.addEventListener("pointerdown", onPointerMove);
+      interactionTarget.addEventListener("pointerup", onPointerLeave);
+      interactionTarget.addEventListener("pointercancel", onPointerLeave);
       interactionTarget.addEventListener("pointerleave", onPointerLeave);
     }
     document.addEventListener("visibilitychange", onVis);
@@ -434,6 +436,9 @@ export function ReactionFront({
       mo.disconnect();
       window.removeEventListener("resize", onResize);
       interactionTarget.removeEventListener("pointermove", onPointerMove);
+      interactionTarget.removeEventListener("pointerdown", onPointerMove);
+      interactionTarget.removeEventListener("pointerup", onPointerLeave);
+      interactionTarget.removeEventListener("pointercancel", onPointerLeave);
       interactionTarget.removeEventListener("pointerleave", onPointerLeave);
       document.removeEventListener("visibilitychange", onVis);
     };
